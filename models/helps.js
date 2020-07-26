@@ -36,6 +36,7 @@ var mensajes = {
         for (var key in listValidations) {
             var itemValid = params[key]
             if(key=="price" || key=="stock"){
+                var result = true
             }else{
                 var result = !validator.isEmpty(params[key])
             }
@@ -71,7 +72,8 @@ var mensajes = {
         if (allowedExt.includes(fileExt)) {
             return {
                 fileName:fileName,
-                isValidate:true
+                isValidate:true,
+                delete:fileSplit
             }
         } else {
           return {
@@ -91,13 +93,15 @@ var mensajes = {
         var filePath = req.files.fichero.path;
         //TODO windows -- var fileSplit = filePath.split('\\');
         var fileSplit = filePath.split('/');
+        
         var fileName = fileSplit[2]
         var extSplit = fileName.split("\.")
         var fileExt = extSplit[1].toLocaleLowerCase()
         if (allowedExt.includes(fileExt)) {
             return {
                 fileName:fileName,
-                isValidate:true
+                isValidate:true,
+                delete:fileSplit
             }
         } else {
           return {
