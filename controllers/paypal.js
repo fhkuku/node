@@ -22,7 +22,7 @@ var controller = {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:3700/api/success",
+                "return_url": "https://helps-books.herokuapp.com/api/success",
                 "cancel_url": "http://localhost:3700/api/return"
             },
             "transactions": [{
