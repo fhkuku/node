@@ -3,11 +3,12 @@ var validator = require("validator")
 var fs = require("fs")
 var path = require('path');
 var mensajes = {
-    success: (res, mensaje,status) => {
+    success: (res, mensaje,status,model) => {
         return res.status(200).send({
             success: true,
             mensaje: mensaje,
-            status:status
+            status:status,
+            model:model
         })
     },
     successToken: (res, mensaje,status) => {

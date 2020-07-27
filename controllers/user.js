@@ -107,7 +107,7 @@ var controller = {
         } else {
             fs.unlink(filePath, (err, delte) => {
                 return Helps.notFound(res, "Extension no valida")
-                console.log("no valido")
+                
             })
         }
     },

@@ -66,7 +66,7 @@ var controller = {
            } */
 
     },
-    success: function (req, res) {
+    success: (req, res) =>{
         var paypal = new Paypal();
         paypal.paymentId = req.query.paymentId
         paypal.PayerID = req.query.PayerID
@@ -82,7 +82,6 @@ var controller = {
         paypal.save((err, stored) => {
             if (stored) {
                 Paypal.find({ _id: stored._id }).populate("manuales._id").exec((err, isok) => {
-                    console.log(isok)
                     res.redirect('http://localhost:4200/confirmacion/' + JSON.stringify(isok));
                 })
             } else {
@@ -92,7 +91,6 @@ var controller = {
     },
     getCompras: function (req, res) {
         Paypal.find({ user: '5f0eb47db2f2f216d5bd36ae' }).populate('user').populate('manuales._id').exec((err, pagos) => {
-            console.log(pagos)
             return Helps.success(res, pagos)
         })
     },

@@ -104,7 +104,7 @@ var controller = {
     },
     getManual: (req, res) => {
         var manualId = req.params.manualId
-        Manual.findById(manualId).exec((err, manual) => {
+        Manual.findById(manualId).populate("user").populate("comentarios.user").exec((err, manual) => {
             if (err || !manual) {
                 return Helps.success(res, "No se ha encontrado el manual", "vacio")
             }
@@ -173,7 +173,6 @@ var controller = {
        
     },
     deleteManual:(req, res)=>{
-        console.log(params)
         var params = req.params
         Manual.findByIdAndDelete({_id:params._id}, (err, manual)=>{
             if(err){

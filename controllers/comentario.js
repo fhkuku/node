@@ -20,12 +20,14 @@ var controller = {
                         content : params.content
                     }
                     manual.comentarios.push(comentario)
-                    manual.save((err)=>{
+                    manual.save((err,comentario)=>{
                         if(err){
                             return Helps.error(res, "Se ha generado un error")
                         }
-
-                        return Helps.success(res, "Se ha guardado correctamente el comentario")
+                        Manual.findById(comentario._id).populate("user").populate("comentarios.user").exec((err, manual)=>{
+                            console.log(manual)
+                            return Helps.success(res, "Se ha publicado tu comentario","success",manual)  
+                        })
                     })
 
                 }else{
