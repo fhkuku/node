@@ -83,7 +83,7 @@ var controller = {
         paypal.save((err, stored) => {
             if (stored) {
                 Paypal.find({ _id: stored._id }).populate("manuales._id").exec((err, isok) => {
-                    res.redirect('http://localhost:4200/confirmacion/' + JSON.stringify(isok));
+                    res.redirect('https://helps-book.herokuapp.com/confirmacion/' + JSON.stringify(isok));
                 })
             } else {
                 return Helps.error(res, err)
