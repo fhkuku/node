@@ -5,6 +5,7 @@ var Paypal = require("../models/paypal")
 var Manual = require("../models/manual")
 var fs = require("fs")
 var path = require('path')
+var moment = require("moment")
 
 var paypal_json
 var total_global
@@ -66,7 +67,7 @@ var controller = {
            } */
 
     },
-    success: (req, res) =>{
+    success: (req, res) => {
         var paypal = new Paypal();
         paypal.paymentId = req.query.paymentId
         paypal.PayerID = req.query.PayerID
@@ -89,9 +90,15 @@ var controller = {
             }
         })
     },
-    getCompras: function (req, res) {
-        Paypal.find({ user: '5f0eb47db2f2f216d5bd36ae' }).populate('user').populate('manuales._id').exec((err, pagos) => {
+    getVentaDetalle: function (req, res) {
+        var _id = req.params.id
+        Paypal.find({ _id: _id }).populate('user').populate('manuales._id').exec((err, pagos) => {
             return Helps.success(res, pagos)
+        })
+    },
+    getTotalVenta: function (req, res) {
+        Paypal.find().exec((err, venta) => {
+            return Helps.success(res, venta)
         })
     },
     getMasVendido: (req, res) => {
@@ -110,7 +117,8 @@ var controller = {
             }
         })
 
-    }
+    },
+
 }
 
 module.exports = controller

@@ -49,7 +49,7 @@ var controller = {
                         })
                     }
                 } else {
-                    return Helps.success(res, "3", "existe")
+                    return Helps.success(res, "Este correo electronico ya ha sido registrado", "existe")
                 }
             })
         } else {

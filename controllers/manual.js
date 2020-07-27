@@ -118,7 +118,9 @@ var controller = {
             "$or": [
                 { "title": { "$regex": buscar, "$options": "i" } },
                 { "description": { "$regex": buscar, "$options": "i" } },
-                { "author": { "$regex": buscar, "$options": "i" } }
+                { "author": { "$regex": buscar, "$options": "i" } },
+                { "price": { "$regex": buscar, "$options": "i" } },
+                { "technology": { "$regex": buscar, "$options": "i" } }
             ]
         }).exec((err, manual) => {
             if (err) {

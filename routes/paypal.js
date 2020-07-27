@@ -9,7 +9,8 @@ var md_auth = require("../middlewares/authenticated")
 
 router.post("/pagar",md_auth.auth, paypal.pagar)
 router.get("/success", paypal.success)
-router.get("/compras",paypal.getCompras)
+router.get("/ventas",paypal.getTotalVenta)
+router.get("/venta/:id",paypal.getVentaDetalle)
 router.get("/top", paypal.getMasVendido)
 router.get("/download/:fichero", paypal.getFile)
 module.exports = router
