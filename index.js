@@ -8,7 +8,7 @@ var app = require('./app')
 var port = process.env.PORT || 3700
 mongoose.set('useFindAndModify',false)
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/project", { useNewUrlParser: true })
+mongoose.connect("mongodb+srv://ferhkuku:peluso@cluster0.u44qn.mongodb.net/helpsbooks?retryWrites=true&w=majority", { useNewUrlParser: true })
 	.then(() => {
 		console.log("Conexión establecida..")
 		//creacion del servidor
