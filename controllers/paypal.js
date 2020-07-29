@@ -73,22 +73,42 @@ var controller = {
         paypal.PayerID = req.query.PayerID
         paypal.user = userId
         paypal.total = total_global
-        for (let i = 0; i < paypal_json.length; i++) {
-            var _id = paypal_json[i].sku
-            var cantidad = paypal_json[i].quantity
-            paypal.manuales.push({ _id, cantidad })
-            Manual.update({ _id: _id }, { $inc: { stock: -cantidad } }, { new: true }, (err, ok) => {
-            })
-        }
-        paypal.save((err, stored) => {
-            if (stored) {
-                Paypal.find({ _id: stored._id }).populate("manuales._id").exec((err, isok) => {
-                    res.redirect('https://helps-book.herokuapp.com/confirmacion/' + JSON.stringify(isok));
-                })
+        var execute_payment_json = {
+            "payer_id": paypal.PayerID,
+            "transactions": [{
+                "amount": {
+                    "currency": "MXN",
+                    "total": paypal.total
+                }
+            }]
+        };
+        
+        var paymentId = paypal.paymentId;
+        
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            if (error) {
+                console.log(error.response);
+                throw error;
             } else {
-                return Helps.error(res, err)
+                for (let i = 0; i < paypal_json.length; i++) {
+                    var _id = paypal_json[i].sku
+                    var cantidad = paypal_json[i].quantity
+                    paypal.manuales.push({ _id, cantidad })
+                    Manual.update({ _id: _id }, { $inc: { stock: -cantidad } }, { new: true }, (err, ok) => {
+                    })
+                }
+                paypal.save((err, stored) => {
+                    if (stored) {
+                        Paypal.find({ _id: stored._id }).populate("manuales._id").exec((err, isok) => {
+                            res.redirect('https://helps-book.herokuapp.com/confirmacion/' + JSON.stringify(isok));
+                        })
+                    } else {
+                        return Helps.error(res, err)
+                    }
+                })
             }
-        })
+        });
+       
     },
     getVentaDetalle: function (req, res) {
         var _id = req.params.id
