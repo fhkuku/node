@@ -85,7 +85,7 @@ var controller = {
         
         var paymentId = paypal.paymentId;
         
-        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        paypal.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
                 console.log("error perro")
                 console.log(error.response);
