@@ -68,24 +68,24 @@ var controller = {
 
     },
     success: (req, res) => {
-        var paypal = new Paypal();
-        paypal.paymentId = req.query.paymentId
-        paypal.PayerID = req.query.PayerID
-        paypal.user = userId
-        paypal.total = total_global
+        var paypals = new Paypal();
+        paypals.paymentId = req.query.paymentId
+        paypals.PayerID = req.query.PayerID
+        paypals.user = userId
+        paypals.total = total_global
         var execute_payment_json = {
-            "payer_id": paypal.PayerID,
+            "payer_id": paypals.PayerID,
             "transactions": [{
                 "amount": {
                     "currency": "MXN",
-                    "total": paypal.total
+                    "total": paypals.total
                 }
             }]
         };
         
-        var paymentId = paypal.paymentId;
+        var paymentId = paypals.paymentId;
         
-        paypal.execute(paymentId, execute_payment_json, function (error, payment) {
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
                 console.log("error perro")
                 console.log(error.response);
@@ -94,11 +94,11 @@ var controller = {
                 for (let i = 0; i < paypal_json.length; i++) {
                     var _id = paypal_json[i].sku
                     var cantidad = paypal_json[i].quantity
-                    paypal.manuales.push({ _id, cantidad })
+                    paypals.manuales.push({ _id, cantidad })
                     Manual.update({ _id: _id }, { $inc: { stock: -cantidad } }, { new: true }, (err, ok) => {
                     })
                 }
-                paypal.save((err, stored) => {
+                paypals.save((err, stored) => {
                     if (stored) {
                         Paypal.find({ _id: stored._id }).populate("manuales._id").exec((err, isok) => {
                             res.redirect('https://helps-book.herokuapp.com/confirmacion/' + JSON.stringify(isok));
